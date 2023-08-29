@@ -12,11 +12,18 @@ firebase_admin.initialize_app(cred, {
 dbref = db.reference("/lost") 
 lost = dbref.get()
 
+
 async def get_imgs():
     print("Downloading recent uploads")
     for key, value in lost.items():
         img_downloader(key, value['image'])
     print("Download Complete")
 
+
+async def delete_img(filename):
+    s = filename.split('/')
+    key = s[-1].split('.')
+    print(key[0])
+    dbref.child(key[0]).remove()
 
 asyncio.run(get_imgs())

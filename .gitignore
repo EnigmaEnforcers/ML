@@ -3,3 +3,4 @@ serviceAccountKey.json
 myenv
 .idea
 data/lost_images
+__pycache__
