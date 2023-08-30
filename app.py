@@ -1,7 +1,9 @@
 from flask import Flask, request, render_template
 import numpy as np
 import pandas as pd
+import asyncio
 
+from firebase import *
 from sklearn.preprocessing import StandardScaler
 from src.pipeline.predict_pipeline import CustomData, PredictPipeline
 
@@ -17,6 +19,7 @@ def index():
 
 @app.route('/predictdata', methods = ['GET', 'POST'])
 def predict_datapoint():
+    asyncio.run(get_imgs())
     if request.method=='GET':
         return render_template('home.html')
     else:
