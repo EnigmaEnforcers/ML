@@ -3,9 +3,11 @@ import numpy as np
 import face_recognition
 import os
 from datetime import datetime
+from firebase import *
 
 # from PIL import ImageGrab
 
+asyncio.run(get_imgs())
 path = 'Training_images'
 images = []
 classNames = []
