@@ -16,7 +16,7 @@ lost = dbref.get()
 async def get_imgs():
     print("Downloading recent uploads")
     for key, value in lost.items():
-        img_downloader(key, value['image'])
+        img_downloader(key, value['image'], False)
     print("Download Complete")
 
 

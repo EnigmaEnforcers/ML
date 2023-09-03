@@ -51,14 +51,14 @@ def markAttendance(name):
 #     capScr = cv2.cvtColor(capScr, cv2.COLOR_RGB2BGR)
 #     return capScr
 
-def model():
+def model(name):
     encodeListKnown = findEncodings(images)
     print('Encoding Complete')
 
-    cap = cv2.VideoCapture(0)
+    cap_path = 'Found_images/' + name
 
     while True:
-        success, img = cap.read()
+        success, img = cv2.imread(cap_path)
         # img = captureScreen()
         imgS = cv2.resize(img, (0, 0), None, 0.25, 0.25)
         imgS = cv2.cvtColor(imgS, cv2.COLOR_BGR2RGB)
@@ -84,4 +84,3 @@ def model():
 
     cv2.imshow('Webcam', img)
     cv2.waitKey(1)
-    cap=cv2.VideoCapture(0) 
