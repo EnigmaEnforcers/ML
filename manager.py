@@ -22,9 +22,9 @@ def img_downloader(name, url, found):
         urllib.request.urlretrieve(url, filepath)
 
 
-def img_deleter(filename):
-    if os.path.isfile(filename):
-        os.remove(filename)
+def img_deleter(filepath):
+    if os.path.isfile(filepath):
+        os.remove(filepath)
     else:
         print("NO SUCH FILE EXISTS")
 
