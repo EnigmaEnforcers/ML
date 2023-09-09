@@ -3,15 +3,29 @@ import numpy as np
 import face_recognition
 import os
 
+path = 'Training_images'
+images = []
+classNames = []
+myList = os.listdir(path)
+for cl in myList:
+    curImg = cv2.imread(f'{path}/{cl}')
+    images.append(curImg)
+    classNames.append(os.path.splitext(cl)[0])
+print(classNames)
+faceless = []
+
 
 def findEncodings(images):
     encodeList = []
-    for img in images:
+
+    for i in images:
+        img = i
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         try:
             encode = face_recognition.face_encodings(img)[0]
         except:
-            print("face not visible")
+            faceless.append(i)
+            print("face not visible: " + i)
         encodeList.append(encode)
     return encodeList
 
