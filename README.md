@@ -3,6 +3,9 @@
 
 Welcome to Find My Kid, an app dedicated to helping users find their lost children and facilitating the sharing of information about found children. This application employs facial recognition technology to match photos of lost children with those posted by users who have found a child. Our mission is to bring families back together during challenging times.
 
+<img src="https://github.com/EnigmaEnforcers/ML/blob/version1/firebase.png"  width="200" height="100"> ‎ ‎ ‎‎ ‎ ‎ ‎ ‎  ‎ ‎  <img src="https://github.com/EnigmaEnforcers/ML/blob/version1/face-recognition-concept-vector-.jpg" width="200" height="100">
+
+
 ## Facial Recognition using Machine Learing
 
 We have implemented a facial recognition system using the face_recognition library in pyhton. The model detects if there are any faces in the input image and then extracts the facial features of the face.
