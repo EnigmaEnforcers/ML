@@ -10,11 +10,12 @@ firApp = firebase_admin.initialize_app(firCredentials, {'storageBucket' : 'gs://
 
 # Get access to Firestore
 db = firestore.client()
-print('Connection initialized')
+print('-----Connection initialized-----')
 lost_col_ref = db.collection('lostChild')
 found_col_ref = db.collection('foundChild')
 matched_col_ref = db.collection('matchedChildren')
 bucket = storage.bucket()
+faceless = set()
 
 
 def on_snapshot(doc_snapshot, changes, read_time):
@@ -44,12 +45,9 @@ def on_snapshot(doc_snapshot, changes, read_time):
                 'lostDate': lost_dict['lostDate']
             }
             matched_col_ref.add(new)
-            lost_col_ref.document(matched).delete()
-            lost_file = 'Training_images/' + matched + '.jpg'
-            img_deleter(lost_file)
-        found_col_ref.document(name).delete()
-        found_file = 'Found_images/' + name + '.jpg'
-        img_deleter(found_file)
+            delete_imgs(matched, False)
+        delete_imgs(name, True)
+        data_cleaner()
 
 
 doc_watch = found_col_ref.on_snapshot(on_snapshot)
@@ -63,7 +61,30 @@ async def get_imgs():
         name = doc.id
         img_downloader(name, image_url, False)
 
-# Keep the app running
+
+def delete_imgs(name, found):
+    if found:
+        path = 'Found_images/' + name + '.jpg'
+        found_col_ref.document(name).delete()
+    else:
+        path = 'Training_images/' + name + '.jpg'
+        lost_col_ref.document(name).delete()
+    img_deleter(path)
+
+
+def data_cleaner():
+    with open('faceless.txt', 'rt', encoding='utf-8') as f:
+        for line in f:
+            faceless.add(line.replace('\n', ''))
+    if not len(faceless):
+        for e in faceless:
+            path = 'Training_images/' + e + '.jpg'
+            delete_imgs(path, False)
+    faceless.clear()
+    with open('faceless.txt', 'w'):
+        pass
+
+
 while True:
     time.sleep(60)
     print("Waiting for changes")
