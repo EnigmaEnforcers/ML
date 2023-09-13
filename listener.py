@@ -47,7 +47,6 @@ def on_snapshot(doc_snapshot, changes, read_time):
             matched_col_ref.add(new)
             delete_imgs(matched, False)
         delete_imgs(name, True)
-        data_cleaner()
 
 
 doc_watch = found_col_ref.on_snapshot(on_snapshot)

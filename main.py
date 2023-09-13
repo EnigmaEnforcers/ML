@@ -17,16 +17,16 @@ print(classNames)
 def findEncodings(images):
     encodeList = []
 
-    for idx, i in enumerate(images):
+    for i in images:
         img = i
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         try:
             encode = face_recognition.face_encodings(img)[0]
         except:
             print("----- No Face Found -----")
-            with open('faceless.txt', 'a', encoding='utf-8') as file:
-                file.write(f'{classNames[idx]}\n')
-            print(classNames[idx])
+            # with open('faceless.txt', 'a', encoding='utf-8') as file:
+            #     file.write(f'{classNames[idx]}\n')
+            # print(classNames[idx])
         encodeList.append(encode)
 
     return encodeList
