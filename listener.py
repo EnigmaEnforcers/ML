@@ -26,7 +26,7 @@ def on_snapshot(doc_snapshot, changes, read_time):
         image_url = (doc_dict['imgUrl'])
         name = doc.id
         img_downloader(name, image_url, True)
-        matched = model(name)
+        matched, faceless = model(name)
         if not matched:
             print("-----No match found-----")
         else:
@@ -47,6 +47,9 @@ def on_snapshot(doc_snapshot, changes, read_time):
             matched_col_ref.add(new)
             delete_imgs(matched, False)
         delete_imgs(name, True)
+        for f in faceless:
+            delete_imgs(f, False)
+
 
 
 doc_watch = found_col_ref.on_snapshot(on_snapshot)
@@ -69,19 +72,6 @@ def delete_imgs(name, found):
         path = 'Training_images/' + name + '.jpg'
         lost_col_ref.document(name).delete()
     img_deleter(path)
-
-
-def data_cleaner():
-    with open('faceless.txt', 'rt', encoding='utf-8') as f:
-        for line in f:
-            faceless.add(line.replace('\n', ''))
-    if not len(faceless):
-        for e in faceless:
-            path = 'Training_images/' + e + '.jpg'
-            delete_imgs(path, False)
-    faceless.clear()
-    with open('faceless.txt', 'w'):
-        pass
 
 
 while True:

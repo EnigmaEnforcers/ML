@@ -16,20 +16,22 @@ print(classNames)
 
 def findEncodings(images):
     encodeList = []
-
+    facelessList = []
+    idx = -1;
     for i in images:
+        idx = idx+1
         img = i
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         try:
             encode = face_recognition.face_encodings(img)[0]
+            encodeList.append(encode)
         except:
-            print("----- No Face Found -----")
+            print("----- No Face Found ----- " + classNames[idx])
+            facelessList .append(classNames[idx])
             # with open('faceless.txt', 'a', encoding='utf-8') as file:
             #     file.write(f'{classNames[idx]}\n')
             # print(classNames[idx])
-        encodeList.append(encode)
-
-    return encodeList
+    return encodeList, facelessList
 
 
 def model(name):
@@ -42,7 +44,10 @@ def model(name):
         images.append(curImg)
         classNames.append(os.path.splitext(cl)[0])
     print(classNames)
-    encodeListKnown = findEncodings(images)
+    encodeListKnown, faceless = findEncodings(images)
+    if len(encodeListKnown) == 0:
+        print("-----NO IMAGES WITH RECOGNIZABLE FACES-----")
+        return None, faceless
     print('-----Encoding Complete-----')
     cap_path = 'Found_images/' + name + '.jpg'
     while True:
@@ -67,8 +72,8 @@ def model(name):
                 cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
                 cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (0, 255, 0), cv2.FILLED)
                 cv2.putText(img, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
-                return name
-        return None
+                return name, faceless
+        return None, faceless
 
     cv2.imshow('Webcam', img)
     cv2.waitKey(1)
